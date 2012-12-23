@@ -15,7 +15,11 @@ public class CountingProgressReporter implements CloneProgressReporter {
 	private Counts m_updatedFileCounts = new Counts();
 	private int m_nSkippedTargetSame = 0;
 	private int m_nSkippedTargetNewer = 0;
-	private int m_nDeletes = 0;
+	private int m_nSkippedIgnore = 0;
+	private int m_nFileDeletes = 0;
+	private int m_nDirCreates = 0;
+	private int m_nDirDeletes = 0;
+	private int m_nDirSkipIgnores = 0;
 	private int m_nErrors;
 	
 	private boolean m_bInUpdate = true;
@@ -32,7 +36,11 @@ public class CountingProgressReporter implements CloneProgressReporter {
 		out.println("Updated copies:         " + m_updatedFileCounts.copies);
 		out.println("Skipped (target same):  " + m_nSkippedTargetSame);
 		out.println("Skipped (target newer): " + m_nSkippedTargetNewer);
-		out.println("Deletes:                " + m_nDeletes);
+		out.println("Skipped (ignore):       " + m_nSkippedIgnore);
+		out.println("Deleted files:          " + m_nFileDeletes);
+		out.println("Directories created:    " + m_nDirCreates);
+		out.println("Directories deleted:    " + m_nDirDeletes);
+		out.println("Directories skipped:    " + m_nDirSkipIgnores);
 		out.println("Errors:                 " + m_nErrors);
 	}
 	
@@ -64,7 +72,11 @@ public class CountingProgressReporter implements CloneProgressReporter {
 				++m_nSkippedTargetNewer;
 				break;
 			}
-
+			case FILE_SKIP_IGNORE: {
+				++m_nSkippedIgnore;
+				break;
+			}
+			
 			case FILE_COPY: {
 				if (m_bInUpdate)
 					++m_updatedFileCounts.copies;
@@ -88,7 +100,20 @@ public class CountingProgressReporter implements CloneProgressReporter {
 			}
 			
 			case FILE_DELETE: {
-				++m_nDeletes;
+				++m_nFileDeletes;
+				break;
+			}
+			
+			case DIRECTORY_CREATE: {
+				++m_nDirCreates;
+				break;
+			}
+			case DIRECTORY_DELETE: {
+				++m_nDirDeletes;
+				break;
+			}
+			case DIRECTORY_SKIP_IGNORE: {
+				++m_nDirSkipIgnores;
 				break;
 			}
 			
