@@ -86,12 +86,12 @@ public class MP3ConvertingHandler implements FileHandler {
 	private Path processFileImpl(Path srcFile, BasicFileAttributes srcAttrs, Path destCandidate, RunType runType, boolean bReportDryRuns) throws FileCloningError {
 		String[] splitPath = splitPath(srcFile);
 		
+		if (!extensionHandled(splitPath[2]))
+			return null;
+		
 		String sNewName = splitPath[1] + ".mp3";
 		
 		Path newPath = destCandidate.resolveSibling(sNewName);
-		
-		if (!extensionHandled(splitPath[2]))
-			return null;
 		
 		FFMPEGMetadata metadata;
 		try {

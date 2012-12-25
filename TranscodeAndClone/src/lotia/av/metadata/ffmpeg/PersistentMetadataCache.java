@@ -15,7 +15,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 public class PersistentMetadataCache {
 	
@@ -50,7 +50,16 @@ public class PersistentMetadataCache {
 			
 			byte[] md5sig = digest.digest();
 			
-			String cachedFileName = Base64.encode(md5sig);
+			Base64 b64 = new Base64(true); // URL safe base64 encoder
+			
+			String cachedFileName = b64.encodeToString(md5sig);
+			
+			// for some reason Apache Commons encoder is adding a CRLF at the end of the URL safe encoding?
+			if (cachedFileName.endsWith("\r\n")) {
+				cachedFileName = cachedFileName.substring(0, cachedFileName.length() - 2);
+			} else if (cachedFileName.endsWith("\n")) {
+				cachedFileName = cachedFileName.substring(0, cachedFileName.length() - 1);
+			}
 			
 			return cachedFileName;
 		} catch (NoSuchAlgorithmException e) {
