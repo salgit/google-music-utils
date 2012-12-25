@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class ContainerFormat {
+public class ContainerFormat implements java.io.Serializable {
+
+	private static final long serialVersionUID = 1822005444310708989L;
 	
 	public int getNumStreams() {
 		return numStreams;

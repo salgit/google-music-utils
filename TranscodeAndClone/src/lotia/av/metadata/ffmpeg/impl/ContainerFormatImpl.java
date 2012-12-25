@@ -5,7 +5,9 @@ import java.util.HashMap;
 import lotia.av.metadata.ffmpeg.ContainerFormat;
 
 public class ContainerFormatImpl extends ContainerFormat {
-	
+
+	private static final long serialVersionUID = -5945255397123060490L;
+
 	public void setNumStreams(int numStreams) {
 		this.numStreams = numStreams;
 	}

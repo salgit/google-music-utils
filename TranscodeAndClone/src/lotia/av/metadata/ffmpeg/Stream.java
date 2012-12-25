@@ -2,8 +2,10 @@ package lotia.av.metadata.ffmpeg;
 
 import java.util.HashMap;
 
-public class Stream {
-	
+public class Stream implements java.io.Serializable {
+
+	private static final long serialVersionUID = 3447600858225517312L;
+
 	public enum Type
 	{
 		TYPE_UNKNOWN,

@@ -3,8 +3,10 @@ package lotia.av.metadata.ffmpeg;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class FFMPEGMetadata {
+public class FFMPEGMetadata implements java.io.Serializable {
 	
+	private static final long serialVersionUID = -2485690805133516281L;
+
 	public ContainerFormat getContainerFormat() {
 		return containerFormat;
 	}

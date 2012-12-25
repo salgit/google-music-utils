@@ -21,7 +21,15 @@ public class FFMPEGMetadataCache {
 	
 	private HashMap<Path, CacheEntry> m_cache = new HashMap<Path, CacheEntry>();
 	
+	private PersistentMetadataCache m_onDiskCache;
+	
 	private FFMPEGMetadataCache() {
+	}
+	
+	public void setCacheDirectory(Path cacheDir) throws IOException {
+		// this should be okay. the old reference will continue to be used
+		// until a thread is done with it?
+		m_onDiskCache = new PersistentMetadataCache(cacheDir);
 	}
 	
     private static class SingletonHolder { 
@@ -34,6 +42,10 @@ public class FFMPEGMetadataCache {
 	
 	public FFMPEGMetadata getMetadataForFile(Path file, BasicFileAttributes attrs) throws IOException, InvalidFFProbeOutput, InterruptedException {
 		
+		if (attrs == null) {
+			attrs = Files.readAttributes(file,  BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+		}		
+
 		CacheEntry entry;
 		
 		synchronized(m_cache)
@@ -41,23 +53,36 @@ public class FFMPEGMetadataCache {
 			entry = m_cache.get(file);
 		}
 		
-		if (entry != null) {
-			if (attrs == null) {
-				attrs = Files.readAttributes(file,  BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+		// if in-memory cache entry was found, then check if it is valid and return
+		if ((entry != null) && (entry.attrs.lastModifiedTime().compareTo(attrs.lastModifiedTime()) >= 0)) {
+			return entry.metadata;
+		}
+		
+		// check on-disk cache
+		if (m_onDiskCache != null) {
+			FFMPEGMetadata diskMD = m_onDiskCache.getMetadataForFile(file, attrs);
+			
+			if (diskMD != null) {
+				entry = new CacheEntry(diskMD, attrs);
 			}
-			if (entry.attrs.lastModifiedTime().compareTo(attrs.lastModifiedTime()) >= 0) {
-				return entry.metadata;
-			}
-		} else {
+		}
+		
+		// if still haven't found, then load from utility
+		if (entry == null)
+		{
 			FFMPEGMetadata metadata = FFMPEGMetadataExtractor.extractMetadataForFile(file);
 			
 			entry = new CacheEntry(metadata, attrs);
 			
-			synchronized(m_cache)
-			{
-				// never mind the race condition here. last one wins :-)
-				m_cache.put(file, entry);
-			}
+			// save it to disk
+			if (m_onDiskCache != null)
+				m_onDiskCache.putMetadataForFile(file, attrs, metadata);
+		}
+
+		synchronized(m_cache)
+		{
+			// never mind the race condition here. last one wins :-)
+			m_cache.put(file, entry);
 		}
 		
 		return entry.metadata;

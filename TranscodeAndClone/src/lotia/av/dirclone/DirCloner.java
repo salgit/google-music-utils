@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
+import lotia.av.metadata.ffmpeg.FFMPEGMetadataCache;
 import lotia.av.metadata.ffmpeg.InvalidFFProbeOutput;
 
 public class DirCloner {
@@ -76,6 +77,7 @@ public class DirCloner {
 		
 		String srcPath = null;
 		String destPath = null;
+		String cacheDir = null;
 		
 		ProgressReportMode progMode = ProgressReportMode.PROGRESS_REPORT_SUMMARY;
 		
@@ -100,6 +102,14 @@ public class DirCloner {
 				}
 				destPath = args[i];	
 			}
+			else if (args[i].equalsIgnoreCase("--cache-dir")) {
+				++i;
+				if (i >= args.length) {
+					usage();
+					return;
+				}
+				cacheDir = args[i]; 
+			}
 			else if (args[i].equalsIgnoreCase("-q") || args[i].equalsIgnoreCase("--quiet")) {
 				progMode = ProgressReportMode.PROGRESS_REPORT_NONE;
 			}
@@ -113,7 +123,8 @@ public class DirCloner {
 		}
 
 		Path srcRoot = null;
-		Path destRoot = null;		
+		Path destRoot = null;
+		Path cacheRoot = null;
 		
 		if (srcPath == null) {
 			String userHome = System.getProperty("user.home");
@@ -127,7 +138,16 @@ public class DirCloner {
 			destRoot = Paths.get(userHome, "Music", "GoogleMusicClone");
 		} else {
 			destRoot = Paths.get(destPath);
-		}		
+		}
+		
+		if (cacheDir == null) {
+			String userHome = System.getProperty("user.home");
+			cacheRoot = Paths.get(userHome, "Library", "Application Support", "GoogleMusicClone", "MetadataCache");
+		} else {
+			cacheRoot = Paths.get(cacheDir);
+		}
+		
+		FFMPEGMetadataCache.getInstance().setCacheDirectory(cacheRoot);
 		
 		(new DirCloner()).clone(srcRoot, destRoot, progMode);
 	}

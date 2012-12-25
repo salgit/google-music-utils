@@ -6,6 +6,8 @@ import lotia.av.metadata.ffmpeg.Stream;
 
 public class StreamImpl extends Stream {
 
+	private static final long serialVersionUID = -4446763445082591484L;
+
 	public void setCodecName(String codecName) {
 		this.codecName = codecName;
 	}

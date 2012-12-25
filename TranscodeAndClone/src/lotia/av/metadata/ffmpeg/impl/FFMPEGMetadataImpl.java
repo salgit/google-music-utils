@@ -7,6 +7,8 @@ import lotia.av.metadata.ffmpeg.Stream;
 
 public class FFMPEGMetadataImpl extends FFMPEGMetadata {
 	
+	private static final long serialVersionUID = -3228137464621533490L;
+
 	public void setContainerFormat(ContainerFormatImpl containerFormat) {
 		this.containerFormat = containerFormat;
 	}
