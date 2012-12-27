@@ -23,6 +23,9 @@ public class PersistentMetadataCache {
 	
 	private Path m_cacheDirectory;
 	
+	private int m_nReadsFromDisk = 0;
+	private int m_nWritesToDisk = 0;
+	
 	public PersistentMetadataCache(Path cacheDirectory) throws IOException {
 		m_cacheDirectory = cacheDirectory;
 		
@@ -31,6 +34,14 @@ public class PersistentMetadataCache {
 		}
 	}
 	
+	public int getNumReadsFromDisk() {
+		return m_nReadsFromDisk;
+	}
+
+	public int getNumWritesToDisk() {
+		return m_nWritesToDisk;
+	}
+
 	private String calculateFileName(Path file, BasicFileAttributes attrs) throws IOException {
 		
 		try {
@@ -83,6 +94,7 @@ public class PersistentMetadataCache {
 		    	ObjectInputStream ois = new ObjectInputStream(fis);
 		    ) {
 			    metadata = (FFMPEGMetadata) ois.readObject();
+			    ++m_nReadsFromDisk;
 		    } catch (ClassNotFoundException e) {
 		    	// this probably means the persisted data is something else, or possibly an older version
 		    	// of the structure. If so, just ignore the cache entry and pretend we don't have it.
@@ -105,6 +117,7 @@ public class PersistentMetadataCache {
 	    		ObjectOutputStream oos = new ObjectOutputStream(fos);
 	    ) {
 		    oos.writeObject(metadata);
+		    ++m_nWritesToDisk;
 	    }
 	}
 }

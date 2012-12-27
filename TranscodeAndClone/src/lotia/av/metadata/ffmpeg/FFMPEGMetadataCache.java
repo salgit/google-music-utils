@@ -1,6 +1,7 @@
 package lotia.av.metadata.ffmpeg;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -23,6 +24,8 @@ public class FFMPEGMetadataCache {
 	
 	private PersistentMetadataCache m_onDiskCache;
 	
+	private int m_nNumNewMetadataComputed = 0;
+	
 	private FFMPEGMetadataCache() {
 	}
 	
@@ -38,6 +41,14 @@ public class FFMPEGMetadataCache {
 
     public static FFMPEGMetadataCache getInstance() {
         return SingletonHolder.instance;
+    }
+    
+    public int getNumPersistentCacheHits() {
+    	return (m_onDiskCache != null) ? m_onDiskCache.getNumReadsFromDisk() : 0;
+    }
+    
+    public int getNumNewMetadataComputed() {
+    	return m_nNumNewMetadataComputed;
     }
 	
 	public FFMPEGMetadata getMetadataForFile(Path file, BasicFileAttributes attrs) throws IOException, InvalidFFProbeOutput, InterruptedException {
@@ -72,6 +83,8 @@ public class FFMPEGMetadataCache {
 		{
 			FFMPEGMetadata metadata = FFMPEGMetadataExtractor.extractMetadataForFile(file);
 			
+			++m_nNumNewMetadataComputed;
+			
 			entry = new CacheEntry(metadata, attrs);
 			
 			// save it to disk
@@ -86,5 +99,10 @@ public class FFMPEGMetadataCache {
 		}
 		
 		return entry.metadata;
+	}
+	
+	public void printStatistics(PrintStream out) {
+		out.println("Metadata cache hits:    " + getNumPersistentCacheHits());
+		out.println("New metadata computed:  " + getNumNewMetadataComputed());
 	}
 }

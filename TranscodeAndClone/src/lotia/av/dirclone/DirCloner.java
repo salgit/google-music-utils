@@ -65,6 +65,8 @@ public class DirCloner {
 		
 		if (progSummary != null)
 			progSummary.printStatistics(System.out);
+		
+		FFMPEGMetadataCache.getInstance().printStatistics(System.out);
 	}
 	
 	private static void usage()
