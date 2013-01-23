@@ -49,6 +49,7 @@ public class DirCloner {
 		cloner.addIgnoreSrcPattern(Pattern.compile(".*/Movies", Pattern.CASE_INSENSITIVE));
 		cloner.addIgnoreSrcPattern(Pattern.compile(".*/TV Shows", Pattern.CASE_INSENSITIVE));
 		cloner.addIgnoreSrcPattern(Pattern.compile(".*/Books", Pattern.CASE_INSENSITIVE));
+		cloner.addIgnoreSrcPattern(Pattern.compile(".*/Mobile Applications", Pattern.CASE_INSENSITIVE));
 		cloner.addIgnoreSrcPattern(Pattern.compile("Mobile Applications", Pattern.CASE_INSENSITIVE));
 		cloner.addIgnoreSrcPattern(Pattern.compile("iPod Games", Pattern.CASE_INSENSITIVE));
 		cloner.addIgnoreSrcPattern(Pattern.compile("Previous iTunes Libraries", Pattern.CASE_INSENSITIVE));
