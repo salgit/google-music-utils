@@ -25,7 +25,18 @@ public class FFMPEGAudioTranscoderImpl {
 	public static void transcodeToMP3(Path src, Path dest) throws UnableToConvertMedia {
 		
 		try {
-			runFFMPEG("ffmpeg", "-i", src.toString(), "-acodec", "libmp3lame", "-ab", "256k", dest.toString());
+			runFFMPEG("ffmpeg", "-i", src.toString(), "-c:a", "libmp3lame", "-q:a", "0", dest.toString());
+		} catch (Exception x) {
+			UnableToConvertMedia x2 = new UnableToConvertMedia(src.toString(), dest.toString());
+			x2.initCause(x);
+			throw x2;
+		}
+	}
+
+	public static void transcodeToAAC(Path src, Path dest) throws UnableToConvertMedia {
+
+		try {
+			runFFMPEG("ffmpeg", "-i", src.toString(), "-c:a", "libfdk_aac", "-vbr", "5", "-cutoff", "18000", dest.toString());
 		} catch (Exception x) {
 			UnableToConvertMedia x2 = new UnableToConvertMedia(src.toString(), dest.toString());
 			x2.initCause(x);

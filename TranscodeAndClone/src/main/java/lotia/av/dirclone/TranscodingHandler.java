@@ -16,17 +16,12 @@ public class TranscodingHandler implements FileHandler {
 	private String[] m_arrSupportedExtensions;
 	private String[] m_arrSupportedCodecs;
 	private long[] m_arrSupportedCodecTags;
-	private Codec m_codec;
+	private FFMPEGAudioTranscoder.Codec m_codec;
 	private CloneProgressReporter m_progress;
 	
 	static private final Pattern s_reFileExtension = Pattern.compile(".+\\.([^\\.]+?)");
 
-	public enum Codec {
-		CODEC_MP3,
-		CODEC_FLAC
-	}
-	
-	public TranscodingHandler(String[] exts, String[] codecs, long[] codec_tags, Codec codec, CloneProgressReporter progress) {
+    public TranscodingHandler(String[] exts, String[] codecs, long[] codec_tags, FFMPEGAudioTranscoder.Codec codec, CloneProgressReporter progress) {
 		m_arrSupportedExtensions = Arrays.copyOf(exts, exts.length);
 		Arrays.sort(m_arrSupportedExtensions);
 		m_arrSupportedCodecs = new String[codecs.length];
@@ -96,7 +91,7 @@ public class TranscodingHandler implements FileHandler {
 		if (!extensionHandled(splitPath[2]))
 			return null;
 		
-		String sNewName = splitPath[1] + ".mp3";
+		String sNewName = splitPath[1] + "." + m_codec.getExtension();
 		
 		Path newPath = destCandidate.resolveSibling(sNewName);
 		
@@ -125,15 +120,7 @@ public class TranscodingHandler implements FileHandler {
 		
 		if (runType == RunType.THE_REAL_DEAL) {
 			try {
-                switch (m_codec) {
-                    case CODEC_FLAC:
-                        FFMPEGAudioTranscoder.transcodeToFLAC(srcFile, newPath);
-                        break;
-
-                    case CODEC_MP3:
-                        FFMPEGAudioTranscoder.transcodeToMP3(srcFile, newPath);
-                        break;
-                }
+                FFMPEGAudioTranscoder.transcodeUsingCodec(m_codec, srcFile, newPath);
 				m_progress.reportProgress(CloneProgressReporter.EventType.FILE_TRANSCODE, srcFile, newPath, null);
 			} catch (Exception e) {
 				throw new FileCloningError(srcFile, newPath, e);
