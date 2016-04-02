@@ -42,15 +42,18 @@ public class ClonerFileVisitor implements FileVisitor<Path> {
 	}
 
 	public void addDefaultIgnorePatterns() {
-		addIgnoreSrcPattern(Pattern.compile(".*/Podcasts", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile(".*/Ringtones", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile(".*/Movies", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile(".*/TV Shows", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile(".*/Books", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile(".*/Mobile Applications", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile("Mobile Applications", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile("iPod Games", Pattern.CASE_INSENSITIVE));
-		addIgnoreSrcPattern(Pattern.compile("Previous iTunes Libraries", Pattern.CASE_INSENSITIVE));
+        // This used to be required, but since cleaning up the library and also sorting out
+        // the correct default location to start from, this is not needed any more
+
+//		addIgnoreSrcPattern(Pattern.compile(".*/Podcasts", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile(".*/Ringtones", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile(".*/Movies", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile(".*/TV Shows", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile(".*/Books", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile(".*/Mobile Applications", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile("Mobile Applications", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile("iPod Games", Pattern.CASE_INSENSITIVE));
+//		addIgnoreSrcPattern(Pattern.compile("Previous iTunes Libraries", Pattern.CASE_INSENSITIVE));
 	}
 	
 	private void recordVisitedFile(Path src, Path dest) {

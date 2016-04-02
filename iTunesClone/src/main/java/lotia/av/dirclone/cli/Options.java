@@ -12,7 +12,7 @@ public class Options {
     private String userHome = System.getProperty("user.home");
 
     @Parameter(names={ "-s", "--source" }, converter=FileConverter.class, description="source directory", validateWith=CLIUtils.DirectoryThatExists.class)
-    public File src = Paths.get(userHome, "Music", "iTunes").toFile();
+    public File src = Paths.get(userHome, "Music", "iTunes", "iTunes Music", "Music").toFile();
 
     @Parameter(names={ "-d", "--destination" }, converter=FileConverter.class, description="destination directory", validateWith=CLIUtils.DirectoryThatExists.class)
     public File dest = Paths.get(userHome, "Music", "iTunesClone").toFile();
