@@ -1,9 +1,9 @@
 apply plugin: 'java'
 
 group = 'lotia.av'
-version = '1.0'
+version = '2.0'
 
-description = """gmclone"""
+description = 'Cloning utility for iTunes libraries which can transcode on the fly.'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7

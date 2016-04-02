@@ -33,4 +33,15 @@ public class FFMPEGAudioTranscoderImpl {
 		}
 	}
 
+	public static void transcodeToFLAC(Path src, Path dest) throws UnableToConvertMedia {
+
+		try {
+			runFFMPEG("ffmpeg", "-i", src.toString(), "-acodec", "flac", "-map_metadata", "0", dest.toString());
+		} catch (Exception x) {
+			UnableToConvertMedia x2 = new UnableToConvertMedia(src.toString(), dest.toString());
+			x2.initCause(x);
+			throw x2;
+		}
+	}
+
 }

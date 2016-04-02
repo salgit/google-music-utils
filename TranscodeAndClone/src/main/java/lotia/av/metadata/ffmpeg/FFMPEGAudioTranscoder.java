@@ -9,4 +9,8 @@ public class FFMPEGAudioTranscoder {
 	public static void transcodeToMP3(Path src, Path dest) throws IOException, UnableToConvertMedia {
 		FFMPEGAudioTranscoderImpl.transcodeToMP3(src, dest);
 	}
+
+	public static void transcodeToFLAC(Path src, Path dest) throws IOException, UnableToConvertMedia {
+		FFMPEGAudioTranscoderImpl.transcodeToFLAC(src, dest);
+	}
 }

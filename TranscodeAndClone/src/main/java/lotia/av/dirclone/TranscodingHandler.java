@@ -11,16 +11,22 @@ import lotia.av.metadata.ffmpeg.FFMPEGMetadata;
 import lotia.av.metadata.ffmpeg.FFMPEGMetadataCache;
 import lotia.av.metadata.ffmpeg.Stream;
 
-public class MP3ConvertingHandler implements FileHandler {
+public class TranscodingHandler implements FileHandler {
 	
 	private String[] m_arrSupportedExtensions;
 	private String[] m_arrSupportedCodecs;
 	private long[] m_arrSupportedCodecTags;
+	private Codec m_codec;
 	private CloneProgressReporter m_progress;
 	
 	static private final Pattern s_reFileExtension = Pattern.compile(".+\\.([^\\.]+?)");
+
+	public enum Codec {
+		CODEC_MP3,
+		CODEC_FLAC
+	}
 	
-	public MP3ConvertingHandler(String[] exts, String[] codecs, long[] codec_tags, CloneProgressReporter progress) {
+	public TranscodingHandler(String[] exts, String[] codecs, long[] codec_tags, Codec codec, CloneProgressReporter progress) {
 		m_arrSupportedExtensions = Arrays.copyOf(exts, exts.length);
 		Arrays.sort(m_arrSupportedExtensions);
 		m_arrSupportedCodecs = new String[codecs.length];
@@ -30,6 +36,7 @@ public class MP3ConvertingHandler implements FileHandler {
 		Arrays.sort(m_arrSupportedCodecs);
 		m_arrSupportedCodecTags = Arrays.copyOf(codec_tags, codec_tags.length);
 		Arrays.sort(m_arrSupportedCodecTags);
+		m_codec = codec;
 		m_progress = progress;
 	}
 	
@@ -118,7 +125,15 @@ public class MP3ConvertingHandler implements FileHandler {
 		
 		if (runType == RunType.THE_REAL_DEAL) {
 			try {
-				FFMPEGAudioTranscoder.transcodeToMP3(srcFile, newPath);
+                switch (m_codec) {
+                    case CODEC_FLAC:
+                        FFMPEGAudioTranscoder.transcodeToFLAC(srcFile, newPath);
+                        break;
+
+                    case CODEC_MP3:
+                        FFMPEGAudioTranscoder.transcodeToMP3(srcFile, newPath);
+                        break;
+                }
 				m_progress.reportProgress(CloneProgressReporter.EventType.FILE_TRANSCODE, srcFile, newPath, null);
 			} catch (Exception e) {
 				throw new FileCloningError(srcFile, newPath, e);

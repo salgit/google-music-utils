@@ -57,7 +57,7 @@ public class DirCloner {
 		String[] extensions = { "m4a", "wav" };
 		String[] codecs = { "alac" };
 		long[] codecTags = { 1 }; // WAV
-		MP3ConvertingHandler convHandler = new MP3ConvertingHandler(extensions, codecs, codecTags, progress);
+		TranscodingHandler convHandler = new TranscodingHandler(extensions, codecs, codecTags, TranscodingHandler.CODEC_FLAC, progress);
 		
 		cloner.pushFileHandler(convHandler);
 		cloner.pushFileHandler(new LinkOrCopyHandler(progress));
@@ -138,14 +138,14 @@ public class DirCloner {
 
 		if (destPath == null) {
 			String userHome = System.getProperty("user.home");
-			destRoot = Paths.get(userHome, "Music", "GoogleMusicClone");
+			destRoot = Paths.get(userHome, "Music", "TeslaMusicClone");
 		} else {
 			destRoot = Paths.get(destPath);
 		}
 		
 		if (cacheDir == null) {
 			String userHome = System.getProperty("user.home");
-			cacheRoot = Paths.get(userHome, "Library", "Application Support", "GoogleMusicClone", "MetadataCache");
+			cacheRoot = Paths.get(userHome, "Library", "Application Support", "TeslaMusicClone", "MetadataCache");
 		} else {
 			cacheRoot = Paths.get(cacheDir);
 		}
