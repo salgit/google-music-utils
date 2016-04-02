@@ -57,7 +57,7 @@ public class DirCloner {
 		String[] extensions = { "m4a", "wav" };
 		String[] codecs = { "alac" };
 		long[] codecTags = { 1 }; // WAV
-		TranscodingHandler convHandler = new TranscodingHandler(extensions, codecs, codecTags, TranscodingHandler.CODEC_FLAC, progress);
+		TranscodingHandler convHandler = new TranscodingHandler(extensions, codecs, codecTags, TranscodingHandler.Codec.CODEC_FLAC, progress);
 		
 		cloner.pushFileHandler(convHandler);
 		cloner.pushFileHandler(new LinkOrCopyHandler(progress));

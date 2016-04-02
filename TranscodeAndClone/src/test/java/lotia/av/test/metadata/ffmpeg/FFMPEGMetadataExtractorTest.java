@@ -1,4 +1,4 @@
-package lotia.av.metadata.ffmpeg.test;
+package lotia.av.test.metadata.ffmpeg;
 
 //import static org.junit.Assert.*;
 
