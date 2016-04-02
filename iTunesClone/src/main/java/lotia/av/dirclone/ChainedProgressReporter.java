@@ -3,11 +3,11 @@ package lotia.av.dirclone;
 import java.nio.file.Path;
 import java.util.Vector;
 
-public class MultiProgressReporter implements CloneProgressReporter {
+public class ChainedProgressReporter implements CloneProgressReporter {
 	
 	private Vector<CloneProgressReporter> m_vReporters = new Vector<CloneProgressReporter>(); 
 	
-	public MultiProgressReporter(CloneProgressReporter... reporters) {
+	public ChainedProgressReporter(CloneProgressReporter... reporters) {
 		for (CloneProgressReporter reporter: reporters) {
 			m_vReporters.add(reporter);
 		}

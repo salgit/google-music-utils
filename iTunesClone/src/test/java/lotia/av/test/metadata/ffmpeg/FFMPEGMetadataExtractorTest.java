@@ -15,7 +15,7 @@ public class FFMPEGMetadataExtractorTest {
 	public void test() throws IOException, InvalidFFProbeOutput, InterruptedException {
 		
 		//Path root = Paths.get("/Users/ghar/Music/iTunes/iTunes Music");
-		Path root = Paths.get("/Users/ghar/Music/iTunes/iTunes Music/Music/Various/Coke Studio Season 3");
+		Path root = Paths.get("/Volumes/mauseeqee/iTunes/iTunes Music/Music/Various/Coke Studio Season 3");
 		
 		FileMetadataVisitor visitor = new FileMetadataVisitor(System.out);
 		
@@ -27,7 +27,7 @@ public class FFMPEGMetadataExtractorTest {
 		
 		System.out.println(System.getenv("PATH"));
 		
-		Path file = Paths.get("/Users/ghar/Music/iTunes/iTunes Music/Music/Louis Armstrong/Unknown Album/We Shall Overcome.m4a");
+		Path file = Paths.get("/Volumes/mauseeqee/iTunes/iTunes Music/Music/Louis Armstrong/Unknown Album/We Shall Overcome.m4a");
 		
 		FileDetailsPrinter.printFileDetails(System.out, file);
 	}

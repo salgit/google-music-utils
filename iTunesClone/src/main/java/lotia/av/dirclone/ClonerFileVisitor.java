@@ -40,6 +40,18 @@ public class ClonerFileVisitor implements FileVisitor<Path> {
 	public void addIgnoreSrcPattern(Pattern patt) {
 		m_ignoreSrc.add(patt);
 	}
+
+	public void addDefaultIgnorePatterns() {
+		addIgnoreSrcPattern(Pattern.compile(".*/Podcasts", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile(".*/Ringtones", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile(".*/Movies", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile(".*/TV Shows", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile(".*/Books", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile(".*/Mobile Applications", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile("Mobile Applications", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile("iPod Games", Pattern.CASE_INSENSITIVE));
+		addIgnoreSrcPattern(Pattern.compile("Previous iTunes Libraries", Pattern.CASE_INSENSITIVE));
+	}
 	
 	private void recordVisitedFile(Path src, Path dest) {
 		m_filesVisited.peek().add(dest.getFileName().toString());
